@@ -52,20 +52,20 @@
 
 				render() {
 					return (
-						<div>
+						<React.Fragment>
 							<div>
 								{this.state.first}곱하기{this.state.second}은?
 							</div>
-							<form action="" type="submit" onSubmit={this.onSubmit}>
+							<form onSubmit={this.onSubmit}>
 								<input
 									type="text"
 									value={this.state.value}
 									onChange={this.onChange}
 								/>
-								<button>입력</button>
+								<button type="submit">입력</button>
 							</form>
 							<div>{this.state.result}</div>
-						</div>
+						</React.Fragment>
 					);
 				}
 			}
