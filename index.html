@@ -18,67 +18,50 @@
 	<body>
 		<div id="root"></div>
 		<script type="text/babel">
-			class Gugudan extends React.Component {
-				constructor(props) {
-					super(props);
-					this.state = {
-						first: Math.ceil(Math.random() * 9),
-						second: Math.ceil(Math.random() * 9),
-						value: "",
-						result: "",
-					};
-				}
-				onSubmit = (e) => {
+			const Gugudan = () => {
+				// useState hook은 함수형 컴포넌트안에 넣어줘야한다.
+				const [first, setFirst] = React.useState(Math.ceil(Math.random() * 9));
+				const [second, setSecond] = React.useState(
+					Math.ceil(Math.random() * 9)
+				);
+				const [value, setValue] = React.useState("");
+				const [result, setResult] = React.useState("");
+
+				const inputRef = React.useRef(null);
+
+				const onChange = (e) => {
+					setValue(e.target.value);
+				};
+
+				const onSubmit = (e) => {
 					e.preventDefault();
-					if (
-						parseInt(this.state.value) ===
-						this.state.first * this.state.second
-					) {
-						this.setState((prevState) => {
-							return {
-								result: "정답: " + prevState.value,
-								first: Math.ceil(Math.random() * 9),
-								second: Math.ceil(Math.random() * 9),
-								value: "",
-							};
-						});
-						this.input.focus();
+					if (parseInt(value) === first * second) {
+						setResult(value + " 정답!");
 					} else {
-						this.setState({
-							result: "땡",
-							value: "",
-						});
+						setResult("땡!");
 					}
+					setValue("");
+					inputRef.current.focus();
 				};
 
-				input;
-
-				onRef = (c) => {
-					this.input = c;
-				};
-
-				onChange = (e) => this.setState({ value: e.target.value });
-
-				render() {
-					return (
-						<React.Fragment>
-							<div>
-								{this.state.first}곱하기{this.state.second}은?
-							</div>
-							<form onSubmit={this.onSubmit}>
-								<input
-									ref={this.onRef}
-									type="text"
-									value={this.state.value}
-									onChange={this.onChange}
-								/>
-								<button type="submit">입력</button>
-							</form>
-							<div>{this.state.result}</div>
-						</React.Fragment>
-					);
-				}
-			}
+				return (
+					<div>
+						<div>
+							{first} 곱하기 {second}는?
+						</div>
+						<form onSubmit={onSubmit}>
+							<input
+								ref={inputRef}
+								type="text"
+								value={value}
+								onChange={onChange}
+							/>
+							<button type="submit">입력!</button>
+						</form>
+						<div>{result}</div>
+					</div>
+				);
+			};
 		</script>
 		<script type="text/babel">
 			ReactDOM.render(<Gugudan />, document.querySelector("#root"));
